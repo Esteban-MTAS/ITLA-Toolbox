@@ -71,6 +71,18 @@ cd android
 .\gradlew.bat assembleDebug assembleRelease
 ```
 
+En Windows, Ninja puede rechazar rutas de más de 260 caracteres. Se verificó este problema en una carpeta profunda. Usar una ruta corta para el proyecto (por ejemplo `C:\src\ITLAToolbox`) o una unidad temporal libre:
+
+```powershell
+# Desde la raíz del proyecto, comprobar que T: esté libre antes de usarla.
+subst T: "$PWD"
+Set-Location T:\android
+.\gradlew.bat assembleRelease assembleDebug --max-workers=4
+# Al terminar, salir de T: y retirar la unidad temporal con subst T: /D.
+```
+
+Si ya hubo una compilación fallida desde la ruta larga, conservar o limpiar sus directorios generados `android/app/.cxx`, `android/app/build` y `android/build` antes de reconstruir; las rutas nativas se generan de nuevo. Esta corrección no requiere activar opciones globales de Windows.
+
 - Desarrollo: `android/app/build/outputs/apk/debug/app-debug.apk`, requiere Metro.
 - Instalación autónoma: `android/app/build/outputs/apk/release/app-release.apk`, incluye JavaScript y recursos.
 - La variante release académica usa la clave de depuración estándar de React Native. No es una firma privada de producción ni una entrega para Play Store. Para distribución comercial, configurar una clave propia fuera de Git y proteger sus contraseñas mediante variables o propiedades locales.

@@ -82,3 +82,5 @@ yarn-error.log
 *.jks
 *.log
 assets/images/profile.jpg
+build-longpath/
+.cxx-longpath/
